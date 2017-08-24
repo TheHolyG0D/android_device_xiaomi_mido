@@ -1,12 +1,10 @@
 [
   {
-    "repository": "TeamHorizon/android_kernel_xiaomi_mido",
-    "target_path": "kernel/xiaomi/mido",
-    "branch": "n"
+    "repository": "android_kernel_xiaomi_mido",
+    "target_path": "kernel/xiaomi/mido"
   },
   {
-    "repository": "TeamHorizon/proprietary_vendor_xiaomi",
-    "target_path": "vendor/xiaomi",
-    "branch": "n"
+    "repository": "proprietary_vendor_xiaomi",
+    "target_path": "vendor/xiaomi"
   }
 ]
