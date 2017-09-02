@@ -106,7 +106,6 @@ PRODUCT_PACKAGES += \
 
 # Camera
 PRODUCT_PACKAGES += \
-    camera.msm8953 \
     libmm-qcamera \
     Snap
 
@@ -127,13 +126,8 @@ PRODUCT_PACKAGES += \
     hwcomposer.msm8953 \
     libgenlock \
     memtrack.msm8953 \
-    liboverlay \
     libjni_livedisplay \
     libtinyxml
-
-# Doze mode
-PRODUCT_PACKAGES += \
-    XiaomiDoze
 
 # DRM
 PRODUCT_PACKAGES += \
