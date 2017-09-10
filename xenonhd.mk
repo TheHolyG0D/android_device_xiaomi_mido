@@ -26,13 +26,6 @@ PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
 
 PRODUCT_PROPERTY_OVERRIDES += ro.xenonhd.maintainer=dadi11
 
-ROOT_METHOD=magisk
-
-PRODUCT_PACKAGES += \
-    Adaway \
-    KernelAdiutor \
-    MiXplorer
-
 PRODUCT_BUILD_PROP_OVERRIDES += \
     BUILD_FINGERPRINT="xiaomi/mido/mido:6.0.1/MMB29M/V8.2.4.0.MCFMIDL:user/release-keys" \
     PRIVATE_BUILD_DESC="mido-user 6.0.1 MMB29M V8.2.4.0.MCFMIDL release-keys"
