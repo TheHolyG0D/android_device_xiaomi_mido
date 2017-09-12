@@ -77,12 +77,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     android.hardware.audio@2.0-impl \
     android.hardware.audio.effect@2.0-impl \
-    android.hardware.broadcastradio@1.0-impl \
     android.hardware.soundtrigger@2.0-impl
 
 # Audio configuration
 PRODUCT_COPY_FILES += \
-	$(LOCAL_PATH)/audio/audio_policy.conf:system/etc/audio_policy.conf \
 	$(LOCAL_PATH)/audio/audio_output_policy.conf:system/vendor/etc/audio_output_policy.conf \
 	$(LOCAL_PATH)/audio/audio_effects.conf:system/vendor/etc/audio_effects.conf \
 	$(LOCAL_PATH)/audio/mixer_paths_mtp.xml:system/etc/mixer_paths_mtp.xml \
@@ -107,7 +105,9 @@ PRODUCT_PACKAGES += \
 # Camera
 PRODUCT_PACKAGES += \
     libmm-qcamera \
-    Snap
+    camera.device@1.0-impl \
+    camera.device@3.2-impl \
+    android.hardware.camera.provider@2.4-impl \
 
 # Consumerir
 PRODUCT_PACKAGES += \
@@ -141,16 +141,13 @@ PRODUCT_PACKAGES += \
 
 # Fingerprint
 PRODUCT_PACKAGES += \
-    fingerprintd
+    android.hardware.biometrics.fingerprint@2.1-service
 
 # FM
 PRODUCT_PACKAGES += \
     FMRadio \
-    libfmjni
-
-# Fs_config
-PRODUCT_PACKAGES += \
-    fs_config_files
+    libfmjni \
+    android.hardware.broadcastradio@1.0-impl
 
 # GNSS HAL
 PRODUCT_PACKAGES += \
@@ -258,7 +255,6 @@ PRODUCT_PACKAGES += \
     ueventd.qcom.rc
 
 PRODUCT_PACKAGES += \
-    init.qcom.bt.sh \
     init.qcom.post_boot.sh
 
 
@@ -268,10 +264,12 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
+    android.hardware.radio@1.0-impl \
     librmnetctl \
     libcnefeatureconfig \
     libxml2 \
-    rild_socket
+    rild_socket \
+    Stk
 
 # Seccomp policy
 PRODUCT_COPY_FILES += \
@@ -309,9 +307,6 @@ PRODUCT_PACKAGES += \
     wcnss_service
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/wifi/hostapd.accept:system/etc/hostapd/hostapd.accept \
-    $(LOCAL_PATH)/wifi/hostapd_default.conf:system/etc/hostapd/hostapd_default.conf \
-    $(LOCAL_PATH)/wifi/hostapd.deny:system/etc/hostapd/hostapd.deny \
     $(LOCAL_PATH)/wifi/p2p_supplicant_overlay.conf:system/etc/wifi/p2p_supplicant_overlay.conf \
     $(LOCAL_PATH)/wifi/wpa_supplicant_overlay.conf:system/etc/wifi/wpa_supplicant_overlay.conf
 

@@ -98,7 +98,6 @@ TARGET_NO_BOOTLOADER := true
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := $(LOCAL_PATH)/bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_QCOM := true
-BLUETOOTH_HCI_USE_MCT := true
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
@@ -123,8 +122,9 @@ BOARD_USES_QCNE := true
 # Cpusets
 ENABLE_CPUSETS := true
 
-# Crypto
-TARGET_HW_DISK_ENCRYPTION := true
+# Enable HW based full disk encryption
+TARGET_HW_DISK_ENCRYPTION := false
+TARGET_CRYPTFS_HW_PATH := $(DEVICE_PATH)/cryptfs_hw
 
 # Dexpreopt
 WITH_DEXPREOPT := false
@@ -152,8 +152,8 @@ TARGET_QCOM_NO_FM_FIRMWARE := true
 USE_DEVICE_SPECIFIC_GPS := true
 TARGET_NO_RPC := true
 
-# Filesystem
-TARGET_ANDROID_FILESYSTEM_CONFIG_H := $(LOCAL_PATH)/android_filesystem_config.h
+#FileSystem
+TARGET_FS_CONFIG_GEN := $(LOCAL_PATH)/config.fs
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_mido

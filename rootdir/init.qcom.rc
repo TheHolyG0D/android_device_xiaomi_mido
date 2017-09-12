@@ -128,6 +128,8 @@ on boot
 
     chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
 
+    setprop ro.qualcomm.bt.hci_transport smd
+
     #For bridgemgr daemon to inform the USB driver of the correct transport
     chown radio radio /sys/class/android_usb/f_rmnet_smd_sdio/transport
 
@@ -307,9 +309,6 @@ on post-fs-data
     mkdir /data/fota 0771
     chown system system /data/fota
 
-    #Create directory for hostapd
-    mkdir /data/hostapd 0770 system wifi
-
     # Create /data/time folder for time-services
     mkdir /data/time/ 0700 system system
 
@@ -418,7 +417,6 @@ on property:sys.boot_completed=1
 
 on property:vold.decrypt=trigger_restart_framework
     start config_bt_addr
-    start config_bluetooth
     start wcnss-service
 
 on property:persist.env.fastdorm.enabled=true
@@ -428,6 +426,7 @@ service cnd /system/bin/cnd
     class main
     socket cnd stream 660 root inet
     writepid /dev/cpuset/system-background/tasks
+    setenv LD_LIBRARY_PATH /system/vendor/lib64
 
 service dpmd /system/bin/dpmd
     class late_start
@@ -468,14 +467,10 @@ service config_bt_addr /system/bin/btnvtool -O
     group bluetooth radio
     oneshot
 
-service config_bluetooth /system/bin/sh /system/etc/init.qcom.bt.sh "onboot"
-    class core
-    user root
-    oneshot
-
 service netmgrd /system/bin/netmgrd
     class main
     writepid /dev/cpuset/system-background/tasks
+    setenv LD_LIBRARY_PATH /system/vendor/lib64
 
 service ipacm-diag /system/bin/ipacm-diag
     class main
@@ -561,13 +556,6 @@ service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
 on property:sys.boot_completed=1
     start qcom-post-boot
 
-service hostapd /system/bin/hostapd -dd /data/hostapd/hostapd.conf
-    class late_start
-    user root
-    group root
-    oneshot
-    disabled
-
 on property:ro.data.large_tcp_window_size=true
     # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
     write /proc/sys/net/ipv4/tcp_adv_win_scale  2
@@ -609,12 +597,13 @@ service qseeproxydaemon /system/vendor/bin/qseeproxydaemon
 on charger
     setprop persist.sys.usb.config charging
 
-service fingerprintd /system/bin/fingerprintd
+service fps_hal /vendor/bin/hw/android.hardware.biometrics.fingerprint@2.1-service
+    # "class hal" causes a race condition on some devices due to files created
+    # in /data. As a workaround, postpone startup until later in boot once
+    # /data is mounted.
     class late_start
     user system
-    group system sdcard_rw
-    system system
-    writepid /dev/cpuset/system-background/tasks
+    group system input
     disabled
 
 service gx_fpd /system/bin/gx_fpd
@@ -626,13 +615,13 @@ service gx_fpd /system/bin/gx_fpd
 on property:sys.fp.vendor=switchf
     stop gx_fpd
     setprop sys.fp.vendor searchf
-    start fingerprintd
+    start fps_hal
     setprop fpc.fp.miui.token 0
     setprop ro.boot.fpsensor fpc
     setprop ro.hardware.fingerprint searchf
 
 on property:sys.fp.onstart=1
-   start fingerprintd
+   start fps_hal
    setprop goodix.fp.miui.analyse 1
    setprop goodix.fp.miui.token 0
    setprop ro.boot.fpsensor gdx
@@ -643,3 +632,4 @@ on property:vold.decrypt=trigger_restart_min_framework
 
 on property:vold.decrypt=trigger_restart_framework
     restart time_daemon
+
